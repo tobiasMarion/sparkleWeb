@@ -1,7 +1,9 @@
 <script lang="ts">
 	import '../app.css';
 
-	let { children } = $props();
+	const { children } = $props();
 </script>
 
-{@render children()}
+<div class="dark min-h-svh bg-zinc-950 text-white antialiased">
+	{@render children()}
+</div>
