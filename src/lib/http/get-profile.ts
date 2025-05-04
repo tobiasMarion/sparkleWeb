@@ -1,18 +1,18 @@
-import { api } from './apiClient';
+import { api } from './apiClient'
 
 export interface User {
-	id: string;
-	name: string;
-	email: string;
-	avatarUrl: string;
+	id: string
+	name: string
+	email: string
+	avatarUrl: string
 }
 
 interface GetProfileResponse {
-	user: User;
+	user: User
 }
 
 export async function getProfile() {
-	const result = await api.get('profile').json<GetProfileResponse>();
+	const result = await api.get('profile').json<GetProfileResponse>()
 
-	return result;
+	return result
 }

@@ -1,17 +1,17 @@
-import { api } from './apiClient';
+import { api } from './apiClient'
 
 interface SignInWithGitHubRequest {
-	code: string;
+	code: string
 }
 
 interface SignInWithGitHubResponse {
-	token: string;
+	token: string
 }
 
 export async function signInWithGitHub({ code }: SignInWithGitHubRequest) {
 	const result = await api
 		.post('sessions/github', { json: { code } })
-		.json<SignInWithGitHubResponse>();
+		.json<SignInWithGitHubResponse>()
 
-	return result;
+	return result
 }

@@ -1,29 +1,29 @@
 <script lang="ts">
-	import { getProfile, type User } from '$lib/http/get-profile';
-	import { LogOutIcon, Loader2 } from '@lucide/svelte';
+	import { getProfile, type User } from '$lib/http/get-profile'
+	import { LogOutIcon, Loader2 } from '@lucide/svelte'
 
-	import { Avatar, DropdownMenu } from 'bits-ui';
-	import { onMount } from 'svelte';
+	import { Avatar, DropdownMenu } from 'bits-ui'
+	import { onMount } from 'svelte'
 
 	function getInitials(name: string) {
 		const initials = name
 			.split(' ')
 			.slice(0, 2)
 			.map((word) => word.charAt(0).toUpperCase())
-			.join('');
+			.join('')
 
-		return initials;
+		return initials
 	}
 
-	let user: User | null = null;
+	let user: User | null = null
 
 	onMount(async () => {
-		user = await getProfile().then((res) => res.user);
-	});
+		user = await getProfile().then((res) => res.user)
+	})
 </script>
 
 {#if !user}
-	<Loader2 class="animate-spin text-white size-4" />
+	<Loader2 class="size-4 animate-spin text-white" />
 {:else}
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger class="flex items-center gap-3 rounded-md outline-none">

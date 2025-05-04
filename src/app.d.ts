@@ -5,8 +5,8 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			user: {
-				token: string;
-			} | null;
+				token: string
+			} | null
 		}
 		// interface PageData {}
 		// interface PageState {}
@@ -14,4 +14,4 @@ declare global {
 	}
 }
 
-export {};
+export {}

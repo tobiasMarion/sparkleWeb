@@ -1,56 +1,56 @@
 // src/lib/api.ts
-import ky from 'ky';
-import { PUBLIC_BACKEND_DOMAIN } from '$env/static/public';
-import { browser } from '$app/environment';
+import ky from 'ky'
+import { PUBLIC_BACKEND_DOMAIN } from '$env/static/public'
+import { browser } from '$app/environment'
 
 export const api = ky.create({
 	prefixUrl: 'http://' + PUBLIC_BACKEND_DOMAIN,
 	hooks: {
 		beforeRequest: [
 			async (request) => {
-				let token;
+				let token
 
 				if (!browser) {
 					try {
-						const { getRequestEvent } = await import('$app/server');
-						const event = getRequestEvent();
-						token = event?.cookies.get('token');
+						const { getRequestEvent } = await import('$app/server')
+						const event = getRequestEvent()
+						token = event?.cookies.get('token')
 					} catch (error) {
-						console.error('Error trying to get token on server:', error);
+						console.error('Error trying to get token on server:', error)
 					}
 				} else {
-					token = getCookieFromBrowser('token');
+					token = getCookieFromBrowser('token')
 				}
 
 				if (token) {
-					request.headers.set('Authorization', `Bearer ${token}`);
+					request.headers.set('Authorization', `Bearer ${token}`)
 				}
 			}
 		]
 	}
-});
+})
 
 function getCookieFromBrowser(name: string): string | undefined {
 	if (!browser || typeof document === 'undefined') {
-		return undefined;
+		return undefined
 	}
 
-	const cookieString = document.cookie;
+	const cookieString = document.cookie
 	if (!cookieString) {
-		return undefined;
+		return undefined
 	}
 
-	const value = `; ${cookieString}`;
-	const parts = value.split(`; ${name}=`);
+	const value = `; ${cookieString}`
+	const parts = value.split(`; ${name}=`)
 
 	if (parts.length !== 2) {
-		return undefined;
+		return undefined
 	}
 
-	const cookiePart = parts.pop();
+	const cookiePart = parts.pop()
 	if (!cookiePart) {
-		return undefined;
+		return undefined
 	}
 
-	return cookiePart.split(';')[0];
+	return cookiePart.split(';')[0]
 }

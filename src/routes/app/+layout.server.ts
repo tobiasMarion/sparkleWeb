@@ -1,12 +1,12 @@
-import { redirect } from '@sveltejs/kit';
-import type { LayoutServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit'
+import type { LayoutServerLoad } from './$types'
 
-export const load: LayoutServerLoad = ({ locals }) => {
-	if (!locals.user) {
-		throw redirect(303, '/');
+export const load: LayoutServerLoad = ({ cookies }) => {
+	const token = cookies.get('token')
+
+	if (!token) {
+		throw redirect(303, '/')
 	}
 
-	return {
-		user: locals.user
-	};
-};
+	return
+}
