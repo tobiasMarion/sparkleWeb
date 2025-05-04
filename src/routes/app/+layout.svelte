@@ -1,6 +1,6 @@
 <script lang="ts">
 	import sparkleIcon from '$lib/assets/sparkle-icon.svg';
-	import ProfileButton from '$lib/components/ui/profileButton.svelte';
+	import ProfileButton from '$lib/components/profileButton.svelte';
 
 	const { children } = $props();
 </script>

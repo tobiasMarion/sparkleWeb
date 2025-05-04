@@ -19,7 +19,6 @@ export const api = ky.create({
 						console.error('Error trying to get token on server:', error);
 					}
 				} else {
-					console.log(document.cookie)
 					token = getCookieFromBrowser('token');
 				}
 
