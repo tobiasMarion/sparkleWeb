@@ -4,6 +4,8 @@
 
 	import { Avatar, DropdownMenu } from 'bits-ui'
 	import { onMount } from 'svelte'
+	import Small from './typo/small.svelte'
+	import Muted from './typo/muted.svelte'
 
 	function getInitials(name: string) {
 		const initials = name
@@ -28,8 +30,8 @@
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger class="flex items-center gap-3 rounded-md outline-none">
 			<div class="hidden flex-col items-end md:flex">
-				<span class="text-sm font-medium">{user?.name}</span>
-				<span class="text-sm text-zinc-500">{user?.email}</span>
+				<Small>{user?.name}</Small>
+				<Muted>{user?.email}</Muted>
 			</div>
 			<span class="text-sm font-medium md:hidden">
 				{user?.name.split(' ')[0]}

@@ -5,7 +5,7 @@
 	>
 		ELEMENTO 1
 
-		<a href="/events/new">Criar Evento</a>
+		<a href="app/events/new">Criar Evento</a>
 	</div>
 
 	<!-- Elemento 2 (4 colunas x 3 linhas) -->

@@ -17,7 +17,7 @@
 			<ProfileButton />
 		</div>
 	</header>
-	<main class="mx-auto flex max-w-screen-xl flex-col items-center px-4 pb-16">
+	<main class="mx-auto flex max-w-screen-xl flex-col items-center px-8 pb-16">
 		{@render children()}
 	</main>
 </div>
