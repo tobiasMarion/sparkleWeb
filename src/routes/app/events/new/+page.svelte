@@ -34,12 +34,12 @@
 		{/if}
 
 		<div class="flex flex-col gap-2">
-			<label for="event-name" class="cursor-pointer">Event name</label>
+			<label for="event-name" class="cursor-pointer font-semibold">Event name</label>
 			<Input bind:value={eventName} id="event-name" name="name" required />
 		</div>
 
 		<div class="flex flex-col gap-2">
-			<label for="event-name" class="cursor-pointer">Event type</label>
+			<label for={eventType ? eventType: "TORCH"} class="cursor-pointer font-semibold">Event type</label>
 
 			<RadioGroup.Root
 				class="flex gap-8"
