@@ -11,11 +11,15 @@
 
 	let latValue = $state<number>()
 	let lonValue = $state<number>()
+	let eventType = $state<string>()
+	let eventName = $state<string>()
 
 	function onLocationSelected({ lat, lon }: ExactLocation) {
 		latValue = lat
 		lonValue = lon
 	}
+
+	let isSubmitButtonActive = $derived(latValue && lonValue && eventType && eventName)
 </script>
 
 <div class="flex w-full gap-8">
@@ -31,13 +35,19 @@
 
 		<div class="flex flex-col gap-2">
 			<label for="event-name" class="cursor-pointer">Event name</label>
-			<Input id="event-name" name="name" />
+			<Input bind:value={eventName} id="event-name" name="name" required />
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<label for="event-name" class="cursor-pointer">Event type</label>
 
-			<RadioGroup.Root class="flex gap-8" name="type">
+			<RadioGroup.Root
+				class="flex gap-8"
+				name="type"
+				onValueChange={(value) => {
+					eventType = value
+				}}
+			>
 				<div class="group flex items-center transition-all">
 					<RadioGroup.Item
 						id="TORCH"
@@ -87,7 +97,7 @@
 			</div>
 		</div>
 
-		<Button>Create Event</Button>
+		<Button disabled={!isSubmitButtonActive}>Create Event</Button>
 	</form>
 
 	<div class="w-full overflow-hidden rounded-lg border">
