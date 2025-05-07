@@ -2,20 +2,28 @@
 	import ParticipantsScene from '$lib/components/3d/participantsScene.svelte'
 	import { H2, Muted } from '$lib/components/typo/'
 	import type { ReceivableMessage } from '$lib/services/Location/schemas.js'
-	import { addListener, connectWebSocket, disconnect } from '$lib/services/Location/ws.js'
+	import { addListener, connectWebSocket, disconnect, removeListener } from '$lib/services/Location/ws.js'
 	import { onMount } from 'svelte'
 
 	let { data } = $props()
 	let { event, participants } = data
+	
+	function onUserJoined (message: ReceivableMessage) {
+			console.log(message)
+		}
 
 	onMount(() => {
 		connectWebSocket(event.id)
 
-		addListener('USER_JOINED', (message: ReceivableMessage) => {
-			console.log(message)
-		})
+		addListener('USER_JOINED', onUserJoined)
+		addListener('USER_LEFT', onUserJoined)
 
-		return disconnect
+		return () => {
+			removeListener('USER_JOINED', onUserJoined)
+			removeListener('USER_LEFT', onUserJoined)
+
+			disconnect()
+		}
 	})
 </script>
 
