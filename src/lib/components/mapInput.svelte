@@ -27,15 +27,15 @@
 		})
 
 		map.on('click', (e) => {
-			const { lng: lon, lat } = e.lngLat
+			const { lng, lat } = e.lngLat
 
 			if (currentMarker) {
 				currentMarker.remove()
 			}
 
-			currentMarker = new mapboxgl.Marker().setLngLat([lon, lat]).addTo(map)
+			currentMarker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map)
 
-			onLocationSelected?.({ lon, lat })
+			onLocationSelected?.({ latitude: lat, longitude: lng })
 		})
 
 		return () => map.remove()

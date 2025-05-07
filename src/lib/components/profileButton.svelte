@@ -6,6 +6,8 @@
 	import { onMount } from 'svelte'
 	import Small from './typo/small.svelte'
 	import Muted from './typo/muted.svelte'
+	import { redirect } from '@sveltejs/kit'
+	import { goto } from '$app/navigation'
 
 	function getInitials(name: string) {
 		const initials = name
@@ -20,7 +22,12 @@
 	let user: User | null = null
 
 	onMount(async () => {
-		user = await getProfile().then((res) => res.user)
+		try {
+			const res = await getProfile()
+			user = res.user
+		} catch (error) {
+			goto('/auth/sign-out')
+		}
 	})
 </script>
 

@@ -14,9 +14,9 @@
 	let eventType = $state<string>()
 	let eventName = $state<string>()
 
-	function onLocationSelected({ lat, lon }: ExactLocation) {
-		latValue = lat
-		lonValue = lon
+	function onLocationSelected({ latitude, longitude }: ExactLocation) {
+		latValue = latitude
+		lonValue = longitude
 	}
 
 	let isSubmitButtonActive = $derived(latValue && lonValue && eventType && eventName)
@@ -39,7 +39,9 @@
 		</div>
 
 		<div class="flex flex-col gap-2">
-			<label for={eventType ? eventType: "TORCH"} class="cursor-pointer font-semibold">Event type</label>
+			<label for={eventType ? eventType : 'TORCH'} class="cursor-pointer font-semibold"
+				>Event type</label
+			>
 
 			<RadioGroup.Root
 				class="flex gap-8"
