@@ -1,11 +1,12 @@
 <script lang="ts">
-	import type { ExactLocation, User } from '$lib/services/Location'
+	import type { ExactLocation, Participant } from '$lib/services/Location/schemas'
 	import { displacementOnEarth } from '$lib/services/Location/utils'
 	import { Canvas, T } from '@threlte/core'
 	import { OrbitControls } from '@threlte/extras'
 	import LocationCylinder from './locationCylinder.svelte'
 
-	let { participants, baseLocation }: { participants: User[]; baseLocation: ExactLocation } = $props()
+	let { participants, baseLocation }: { participants: Participant[]; baseLocation: ExactLocation } =
+		$props()
 
 	let solids = $derived(
 		participants.map(({ location }) => {

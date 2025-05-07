@@ -2,6 +2,7 @@
 import ky from 'ky'
 import { PUBLIC_BACKEND_DOMAIN } from '$env/static/public'
 import { browser } from '$app/environment'
+import { getCookieFromBrowser } from '$lib/utils'
 
 export const api = ky.create({
 	prefixUrl: 'http://' + PUBLIC_BACKEND_DOMAIN,
@@ -29,28 +30,3 @@ export const api = ky.create({
 		]
 	}
 })
-
-function getCookieFromBrowser(name: string): string | undefined {
-	if (!browser || typeof document === 'undefined') {
-		return undefined
-	}
-
-	const cookieString = document.cookie
-	if (!cookieString) {
-		return undefined
-	}
-
-	const value = `; ${cookieString}`
-	const parts = value.split(`; ${name}=`)
-
-	if (parts.length !== 2) {
-		return undefined
-	}
-
-	const cookiePart = parts.pop()
-	if (!cookiePart) {
-		return undefined
-	}
-
-	return cookiePart.split(';')[0]
-}

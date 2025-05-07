@@ -3,7 +3,7 @@
 	import { H2, Lead, Muted, P } from '$lib/components/typo'
 	import Input from '$lib/components/ui/input.svelte'
 	import { RadioGroup } from 'bits-ui'
-	import type { ExactLocation } from '$lib/services/Location'
+	import type { ExactLocation } from '$lib/services/Location/schemas'
 	import Button from '$lib/components/ui/button.svelte'
 	import { enhance } from '$app/forms'
 

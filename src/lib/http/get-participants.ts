@@ -1,8 +1,8 @@
-import type { User } from '$lib/services/Location'
+import type { Participant } from '$lib/services/Location/schemas'
 import { api } from './apiClient'
 
 interface GetParticipantsResponse {
-	participants: User[]
+	participants: Participant[]
 }
 
 export async function getParticipants(id: string) {

@@ -1,4 +1,4 @@
-import type { ExactLocation, Location } from './index'
+import type { ExactLocation, Location } from './schemas'
 
 export const EARTHS_RADIUS = 6371000
 
