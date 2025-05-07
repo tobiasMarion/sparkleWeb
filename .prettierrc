@@ -4,10 +4,10 @@
 	"trailingComma": "none",
 	"semi": false,
 	"printWidth": 100,
-	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
+	"plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-svelte"],
 	"overrides": [
 		{
-			"files": "*.svelte, *.ts",
+			"files": "*.svelte",
 			"options": {
 				"parser": "svelte"
 			}

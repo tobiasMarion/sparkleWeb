@@ -31,6 +31,7 @@ export const authMessageSchema = z.object({
 
 export const locationUpdateSchema = z.object({
 	type: z.literal('LOCATION_UPDATE'),
+	deviceId: z.string(),
 	location: locationSchema
 })
 
