@@ -2,4 +2,4 @@
 	let { children } = $props()
 </script>
 
-<small class="text-sm leading-none font-medium">{@render children()}</small>
+<small class="text-sm leading-none">{@render children()}</small>

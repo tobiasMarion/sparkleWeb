@@ -12,7 +12,7 @@ import {
 let socket: WebSocket | null = null
 
 const listeners: ListenersMap = {
-	LOCATION_UPDATE: new Set(),
+	LOCATION_UPDATE_REPORT: new Set(),
 	USER_JOINED: new Set(),
 	DISTANCE: new Set(),
 	USER_LEFT: new Set(),

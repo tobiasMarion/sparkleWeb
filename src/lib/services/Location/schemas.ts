@@ -30,7 +30,7 @@ export const authMessageSchema = z.object({
 })
 
 export const locationUpdateSchema = z.object({
-	type: z.literal('LOCATION_UPDATE'),
+	type: z.literal('LOCATION_UPDATE_REPORT'),
 	deviceId: z.string(),
 	location: locationSchema
 })
@@ -66,7 +66,7 @@ export const setPointSchema = z.object({
 
 export const messageSchemas = {
 	AUTH: authMessageSchema,
-	LOCATION_UPDATE: locationUpdateSchema,
+	LOCATION_UPDATE_REPORT: locationUpdateSchema,
 	USER_JOINED: userJoinedSchema,
 	DISTANCE: distanceSchema,
 	USER_LEFT: userLeftSchema,

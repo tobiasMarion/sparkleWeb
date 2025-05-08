@@ -5,5 +5,7 @@ import P from '$lib/components/typo/p.svelte'
 import Blockquote from './blockquote.svelte'
 import H1 from './h1.svelte'
 import Small from './small.svelte'
+import H3 from './h3.svelte'
+import H4 from './h4.svelte'
 
-export { Blockquote, H1, H2, Lead, Muted, P, Small }
+export { Blockquote, H1, H2, H3, H4, Lead, Muted, P, Small }

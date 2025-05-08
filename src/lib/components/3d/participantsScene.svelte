@@ -4,6 +4,7 @@
 	import { Canvas, T } from '@threlte/core'
 	import { OrbitControls } from '@threlte/extras'
 	import LocationCylinder from './locationCylinder.svelte'
+	import Switch from '$lib/components/ui/switch.svelte'
 
 	interface Props {
 		participants: Map<string, Location>
