@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { T } from '@threlte/core'
+	import { FakeGlowMaterial } from '@threlte/extras'
 	import * as THREE from 'three'
 
 	interface Positon {
@@ -32,5 +33,5 @@
 
 <T.Mesh position={[x, y, z]} scale={0.25}>
 	<T.SphereGeometry />
-	<T.MeshBasicMaterial color="white" />
+	<FakeGlowMaterial glowColor="red" />
 </T.Mesh>

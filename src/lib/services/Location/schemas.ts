@@ -102,25 +102,27 @@ export type ListenersMap = {
 	[K in ReceivableMessage['type']]: Set<Listener<K>>
 }
 
+type SafeParseReturn<T> =
+	{ success: true, error: null, data: T } |
+	{ success: false, error: z.ZodFormattedError<T> | { message: string }, data: null }
+
 export function safeParseJsonMessage<T>(
 	jsonString: string,
 	schema: z.Schema<T>
-):
-	| { success: true; data: T }
-	| { success: false; error: z.ZodFormattedError<T> | { message: string } } {
+): SafeParseReturn<T> {
 	let parsedData: unknown
 
 	try {
 		parsedData = JSON.parse(jsonString)
 	} catch {
-		return { success: false, error: { message: 'Invalid JSON' } }
+		return { success: false, error: { message: 'Invalid JSON' }, data: null }
 	}
 
 	const result = schema.safeParse(parsedData)
 
 	if (!result.success) {
-		return { success: false, error: result.error.format() }
+		return { success: false, error: result.error.format(), data: null }
 	}
 
-	return { success: true, data: result.data }
+	return { success: true, data: result.data, error: null }
 }

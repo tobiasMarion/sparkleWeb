@@ -23,8 +23,11 @@
 	function onLocationUpdate(
 		message: MessageMap['USER_JOINED'] | MessageMap['LOCATION_UPDATE_REPORT']
 	) {
+		console.log(message)
 		const { deviceId, location } = message
-		participantsMap = new Map(participantsMap).set(deviceId, location)
+		const newMap = new Map(participantsMap)
+		newMap.set(deviceId, location)
+		participantsMap = newMap
 	}
 
 	function onUserLeft(message: MessageMap['USER_LEFT']) {

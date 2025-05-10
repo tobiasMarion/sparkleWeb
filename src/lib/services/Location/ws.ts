@@ -45,27 +45,19 @@ export function connectWebSocket(eventId: string) {
 	}
 
 	socket.onmessage = ({ data }) => {
-		const parsed = safeParseJsonMessage(data, receivableMessageSchema)
+		const { data: message, success, error } = safeParseJsonMessage(data, receivableMessageSchema)
 
-		if (!parsed.success) {
-			console.warn('Mensagem inválida recebida:', parsed.error)
+		if (!success) {
+			console.warn('Mensagem inválida recebida:', error)
 			return
 		}
 
-		const message = parsed.data
+		const handlers = listeners[message.type] as Set<Listener<typeof message.type>>
 
-		switch (message.type) {
-			case 'USER_JOINED':
-				listeners.USER_JOINED.forEach((handler) => handler(message))
-				break
-			case 'USER_LEFT':
-				listeners.USER_LEFT.forEach((handler) => handler(message))
-				break
-			default:
-				console.warn('Tipo de mensagem desconhecido recebido:', message)
-		}
+		handlers.forEach(handler => handler(message))
 	}
 }
+
 
 export function disconnect() {
 	socket?.close()
