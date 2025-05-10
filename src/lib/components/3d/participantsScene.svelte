@@ -9,9 +9,11 @@
 	interface Props {
 		participants: Map<string, Location>
 		baseLocation: ExactLocation
+		showLocationAreas: boolean
+		showGraphEdges: boolean
 	}
 
-	let { participants, baseLocation }: Props = $props()
+	let { participants, baseLocation, showLocationAreas }: Props = $props()
 
 	let solids = $derived(
 		participants.values().map((location) => {
@@ -39,7 +41,7 @@
 		<T.AxesHelper args={[0.5, 0.5, 0.5]} />
 
 		{#each solids as solid}
-			<LocationCylinder particle={solid.position} cylinder={solid} />
+			<LocationCylinder particle={solid.position} cylinder={solid} {showLocationAreas} />
 		{/each}
 	</Canvas>
 </div>

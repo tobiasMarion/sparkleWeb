@@ -1,9 +1,7 @@
 <script lang="ts">
 	import ParticipantsScene from '$lib/components/3d/participantsScene.svelte'
-	import { H2, H3, Muted, Small } from '$lib/components/typo/'
-	import H4 from '$lib/components/typo/h4.svelte'
-	import P from '$lib/components/typo/p.svelte'
-	import Switch from '$lib/components/ui/switch.svelte'
+	import EventControlPanel from '$lib/components/eventControlPanel.svelte'
+	import { H2, Muted } from '$lib/components/typo/'
 	import type { MessageMap } from '$lib/services/Location/schemas.js'
 	import {
 		addListener,
@@ -53,6 +51,7 @@
 	})
 
 	let showLocationAreas = $state(false)
+	let showGraphEdges = $state(false)
 </script>
 
 <div class="w-full">
@@ -63,37 +62,13 @@
 
 	<div class="flex gap-8">
 		<div class="w-full">
-			<ParticipantsScene participants={participantsMap} baseLocation={{ ...event }} />
+			<ParticipantsScene
+				participants={participantsMap}
+				baseLocation={{ ...event }}
+				{showLocationAreas}
+				{showGraphEdges}
+			/>
 		</div>
-		<div class="border border-border rounded-lg shadow-sm round p-8 h-fit min-w-sm space-y-6">
-			<div>
-				<H3>Control Panel</H3>
-				<Muted><Small>Send effetcs to your fireflyes</Small></Muted>
-			</div>
-
-			<div class="space-y-2">
-				<H4>Effects</H4>
-
-				<div class="grid grid-cols-3 gap-4">
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-					<div class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow">a</div>
-				</div>
-			</div>
-
-			<div class="space-y-2">
-				<H4>Settings</H4>
-				<div class="flex gap-2 items-center">
-					<Switch id="show-location-areas" small bind:checked={showLocationAreas} />
-					<label for="show-location-areas" class="cursor-pointer ml-1">Show location spaces</label>
-				</div>
-			</div>
-		</div>
+		<EventControlPanel bind:showLocationAreas bind:showGraphEdges />
 	</div>
 </div>

@@ -2,17 +2,11 @@
 	import { Switch as SwitchPrimitive } from 'bits-ui'
 	import { cn } from '$lib/utils.js'
 
-	const {
-		class: className = '',
-		checked = $bindable(false),
-		small = false,
-		...restProps
-	} = $props()
-	let state = $state(checked)
+	let { class: className = '', checked = $bindable(false), small = false, ...restProps } = $props()
 </script>
 
 <SwitchPrimitive.Root
-	bind:checked={state}
+	bind:checked
 	class={cn(
 		small ? 'h-4 w-7' : 'h-6 w-11',
 		`focus-visible:ring-ring focus-visible:ring-offset-background data-[state=checked]:bg-primary data-[state=unchecked]:bg-input peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`,

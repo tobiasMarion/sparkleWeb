@@ -10,6 +10,7 @@
 	}
 
 	interface Props {
+		showLocationAreas: boolean
 		cylinder: {
 			position: Positon
 			radius: number
@@ -18,7 +19,7 @@
 		particle: Positon
 	}
 
-	let { cylinder, particle }: Props = $props()
+	let { cylinder, particle, showLocationAreas }: Props = $props()
 	let { radius, height, position } = cylinder
 	let { x, y, z } = particle
 
@@ -27,9 +28,11 @@
 	const edgeGeometry = new THREE.EdgesGeometry(cylinderGeometry)
 </script>
 
-<T.LineSegments position={[position.x, position.y, position.z]} geometry={edgeGeometry}>
-	<T.LineBasicMaterial color="white" />
-</T.LineSegments>
+{#if showLocationAreas}
+	<T.LineSegments position={[position.x, position.y, position.z]} geometry={edgeGeometry}>
+		<T.LineBasicMaterial color="white" />
+	</T.LineSegments>
+{/if}
 
 <T.Mesh position={[x, y, z]} scale={0.25}>
 	<T.SphereGeometry />
