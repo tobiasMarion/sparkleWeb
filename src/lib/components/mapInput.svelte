@@ -3,7 +3,7 @@
 	import { PUBLIC_MAPBOX_PUBLIC_TOKEN } from '$env/static/public'
 	import { onMount } from 'svelte'
 	import mapboxgl from 'mapbox-gl'
-	import type { ExactLocation } from '$lib/services/Location/schemas'
+	import type { ExactLocation } from '$lib/services/location/schemas'
 
 	mapboxgl.accessToken = PUBLIC_MAPBOX_PUBLIC_TOKEN
 

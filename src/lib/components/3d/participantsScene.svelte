@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { ExactLocation, Location, Participant } from '$lib/services/Location/schemas'
-	import { displacementOnEarth } from '$lib/services/Location/utils'
+	import type { ExactLocation, Location, Participant } from '$lib/services/location/schemas'
+	import { displacementOnEarth } from '$lib/services/location/utils'
 	import { Canvas, T } from '@threlte/core'
 	import { OrbitControls } from '@threlte/extras'
 	import LocationCylinder from './locationCylinder.svelte'

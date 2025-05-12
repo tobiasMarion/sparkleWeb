@@ -1,4 +1,4 @@
-import type { Participant } from '$lib/services/Location/schemas'
+import type { Participant } from '$lib/services/location/schemas'
 import { api } from './apiClient'
 
 interface GetParticipantsResponse {

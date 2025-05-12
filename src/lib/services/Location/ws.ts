@@ -36,11 +36,11 @@ export function connectWebSocket(eventId: string) {
 		}
 
 		sendMessage({ type: 'AUTHENTICATION', token })
-		console.log('Conexão WebSocket estabelecida')
+		console.log('WebSocket connection established')
 	}
 
 	socket.onclose = () => {
-		console.log('Conexão WebSocket encerrada')
+		console.log('WebSocket connection closed')
 		socket = null
 	}
 
@@ -48,7 +48,7 @@ export function connectWebSocket(eventId: string) {
 		const { data: message, success, error } = safeParseJsonMessage(data, receivableMessageSchema)
 
 		if (!success) {
-			console.warn('Mensagem inválida recebida:', error)
+			console.warn('Invalid message received:', error)
 			return
 		}
 
