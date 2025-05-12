@@ -1,5 +1,5 @@
-import { getEventById } from '$lib/http/get-event-by-id.js'
-import { getParticipants } from '$lib/http/get-participants.js'
+import { getEventById } from '$lib/http/getEventById.js'
+import { getParticipants } from '$lib/http/getParticipants.js'
 import { error } from '@sveltejs/kit'
 
 export async function load({ params }) {

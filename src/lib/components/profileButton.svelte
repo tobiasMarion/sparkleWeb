@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getProfile, type User } from '$lib/http/get-profile'
+	import { getProfile, type User } from '$lib/http/getProfile'
 	import { LogOutIcon, Loader2 } from '@lucide/svelte'
 
 	import { Avatar, DropdownMenu } from 'bits-ui'
