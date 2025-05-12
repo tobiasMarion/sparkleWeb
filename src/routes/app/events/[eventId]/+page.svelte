@@ -12,7 +12,7 @@
 	import { onMount } from 'svelte'
 
 	let { data } = $props()
-	let { event, participants } = data
+	let { event, participants, edges } = data
 
 	let participantsMap = $state(
 		new Map(participants.map(({ deviceId, location }) => [deviceId, location]))
@@ -65,6 +65,7 @@
 			<ParticipantsScene
 				participants={participantsMap}
 				baseLocation={{ ...event }}
+				{edges}
 				{showLocationAreas}
 				{showGraphEdges}
 			/>

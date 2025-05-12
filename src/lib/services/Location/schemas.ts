@@ -103,8 +103,8 @@ export type ListenersMap = {
 }
 
 type SafeParseReturn<T> =
-	{ success: true, error: null, data: T } |
-	{ success: false, error: z.ZodFormattedError<T> | { message: string }, data: null }
+	| { success: true; error: null; data: T }
+	| { success: false; error: z.ZodFormattedError<T> | { message: string }; data: null }
 
 export function safeParseJsonMessage<T>(
 	jsonString: string,

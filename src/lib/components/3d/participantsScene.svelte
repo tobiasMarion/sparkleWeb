@@ -5,15 +5,17 @@
 	import { OrbitControls } from '@threlte/extras'
 	import LocationCylinder from './locationCylinder.svelte'
 	import Switch from '$lib/components/ui/switch.svelte'
+	import type { Edge } from '$lib/services/graph/schemas'
 
 	interface Props {
 		participants: Map<string, Location>
 		baseLocation: ExactLocation
+		edges: Edge[]
 		showLocationAreas: boolean
 		showGraphEdges: boolean
 	}
 
-	let { participants, baseLocation, showLocationAreas }: Props = $props()
+	let { participants, baseLocation, showLocationAreas, edges }: Props = $props()
 
 	let solids = $derived(
 		participants.values().map((location) => {

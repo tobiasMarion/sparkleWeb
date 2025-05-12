@@ -54,10 +54,9 @@ export function connectWebSocket(eventId: string) {
 
 		const handlers = listeners[message.type] as Set<Listener<typeof message.type>>
 
-		handlers.forEach(handler => handler(message))
+		handlers.forEach((handler) => handler(message))
 	}
 }
-
 
 export function disconnect() {
 	socket?.close()

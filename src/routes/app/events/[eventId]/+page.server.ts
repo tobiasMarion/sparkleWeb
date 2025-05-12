@@ -1,3 +1,4 @@
+import { getEdges } from '$lib/http/getEdges.js'
 import { getEventById } from '$lib/http/getEventById.js'
 import { getParticipants } from '$lib/http/getParticipants.js'
 import { error } from '@sveltejs/kit'
@@ -5,9 +6,10 @@ import { error } from '@sveltejs/kit'
 export async function load({ params }) {
 	const { eventId } = params
 
-	const [{ event }, { participants }] = await Promise.all([
+	const [{ event }, { participants }, { edges }] = await Promise.all([
 		getEventById(eventId),
-		getParticipants(eventId)
+		getParticipants(eventId),
+		getEdges(eventId)
 	])
 
 	if (!event) {
@@ -16,6 +18,7 @@ export async function load({ params }) {
 
 	return {
 		event,
-		participants
+		participants,
+		edges
 	}
 }
