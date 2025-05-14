@@ -10,12 +10,12 @@ export const locationSchema = z.object({
 
 export type Location = z.infer<typeof locationSchema>
 
-export const exactLocationSchema = z.object({
+export const LocationSchema = z.object({
 	latitude: z.number().min(-90).max(90),
 	longitude: z.number().min(-180).max(180)
 })
 
-export type ExactLocation = z.infer<typeof exactLocationSchema>
+export type ExactLocation = z.infer<typeof LocationSchema>
 
 export const participantSchema = z.object({
 	deviceId: z.string(),
@@ -41,8 +41,9 @@ export const userJoinedSchema = z.object({
 	location: locationSchema
 })
 
-export const distanceSchema = z.object({
-	type: z.literal('DISTANCE'),
+export const distanceReportSchema = z.object({
+	type: z.literal('DISTANCE_REPORT'),
+	from: z.string(),
 	to: z.string(),
 	distance: z.number().nullable()
 })
@@ -52,25 +53,24 @@ export const userLeftSchema = z.object({
 	deviceId: z.string()
 })
 
-export const setPointSchema = z.object({
-	type: z.literal('SET_POINT'),
+export const setPointReportSchema = z.object({
+	type: z.literal('SET_POINT_REPORT'),
+	deviceId: z.string(),
 	absolute: z.object({ x: z.number(), y: z.number(), z: z.number() }),
-	relative: z
-		.object({
-			x: z.number().int(),
-			y: z.number().int(),
-			z: z.number().int()
-		})
-		.nullable()
+	relative: z.object({
+		x: z.number().int(),
+		y: z.number().int(),
+		z: z.number().int()
+	})
 })
 
 export const messageSchemas = {
 	AUTH: authMessageSchema,
 	LOCATION_UPDATE_REPORT: locationUpdateSchema,
 	USER_JOINED: userJoinedSchema,
-	DISTANCE: distanceSchema,
+	DISTANCE_REPORT: distanceReportSchema,
 	USER_LEFT: userLeftSchema,
-	SET_POINT: setPointSchema
+	SET_POINT_REPORT: setPointReportSchema
 } as const
 
 export type MessageTypes = keyof typeof messageSchemas
@@ -89,9 +89,9 @@ export const sendableMessageSchema = authMessageSchema
 export const receivableMessageSchema = z.discriminatedUnion('type', [
 	locationUpdateSchema,
 	userJoinedSchema,
-	distanceSchema,
+	distanceReportSchema,
 	userLeftSchema,
-	setPointSchema
+	setPointReportSchema
 ])
 
 export type Listener<T extends ReceivableMessage['type']> = (

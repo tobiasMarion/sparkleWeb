@@ -1,16 +1,11 @@
-import { getEdges } from '$lib/http/getEdges.js'
 import { getEventById } from '$lib/http/getEventById.js'
-import { getParticipants } from '$lib/http/getParticipants.js'
+import { GetEventGraph } from '$lib/http/getEventGraph.js'
 import { error } from '@sveltejs/kit'
 
 export async function load({ params }) {
 	const { eventId } = params
 
-	const [{ event }, { participants }, { edges }] = await Promise.all([
-		getEventById(eventId),
-		getParticipants(eventId),
-		getEdges(eventId)
-	])
+	const [{ event }, graph] = await Promise.all([getEventById(eventId), GetEventGraph(eventId)])
 
 	if (!event) {
 		error(404)
@@ -18,7 +13,6 @@ export async function load({ params }) {
 
 	return {
 		event,
-		participants,
-		edges
+		graph
 	}
 }

@@ -14,9 +14,9 @@ let socket: WebSocket | null = null
 const listeners: ListenersMap = {
 	LOCATION_UPDATE_REPORT: new Set(),
 	USER_JOINED: new Set(),
-	DISTANCE: new Set(),
+	DISTANCE_REPORT: new Set(),
 	USER_LEFT: new Set(),
-	SET_POINT: new Set()
+	SET_POINT_REPORT: new Set()
 }
 
 export function connectWebSocket(eventId: string) {

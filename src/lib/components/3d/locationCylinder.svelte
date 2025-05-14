@@ -1,27 +1,22 @@
 <script lang="ts">
+	import { type NodePosition, type Vector } from '$lib/services/graph/schemas'
+	import { vectorToArray } from '$lib/services/graph/utils'
 	import { T } from '@threlte/core'
 	import { FakeGlowMaterial } from '@threlte/extras'
 	import * as THREE from 'three'
 
-	interface Positon {
-		x: number
-		y: number
-		z: number
-	}
-
 	interface Props {
 		showLocationAreas: boolean
 		cylinder: {
-			position: Positon
+			position: Vector
 			radius: number
 			height: number
 		}
-		particle: Positon
+		particle?: NodePosition
 	}
 
 	let { cylinder, particle, showLocationAreas }: Props = $props()
 	let { radius, height, position } = cylinder
-	let { x, y, z } = particle
 
 	const cylinderGeometry = new THREE.CylinderGeometry(radius, radius, height, 16)
 
@@ -29,12 +24,14 @@
 </script>
 
 {#if showLocationAreas}
-	<T.LineSegments position={[position.x, position.y, position.z]} geometry={edgeGeometry}>
+	<T.LineSegments position={vectorToArray(position)} geometry={edgeGeometry}>
 		<T.LineBasicMaterial color="white" />
 	</T.LineSegments>
 {/if}
 
-<T.Mesh position={[x, y, z]} scale={0.25}>
-	<T.SphereGeometry />
-	<FakeGlowMaterial glowColor="red" />
-</T.Mesh>
+{#if particle}
+	<T.Mesh position={vectorToArray(particle.absolute)} scale={0.25}>
+		<T.SphereGeometry />
+		<FakeGlowMaterial glowColor="white" />
+	</T.Mesh>
+{/if}
