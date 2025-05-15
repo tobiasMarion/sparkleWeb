@@ -9,7 +9,9 @@
 	let { event, graph } = data
 
 	let showLocationAreas = $state(false)
+	let showReportedLocations = $state(false)
 	let showGraphEdges = $state(false)
+	let showXYZReference = $state(false)
 
 	onMount(() => {
 		connectWebSocket(event.id)
@@ -28,8 +30,20 @@
 
 	<div class="flex gap-8">
 		<div class="w-full">
-			<ParticipantsScene baseLocation={{ ...event }} {graph} {showLocationAreas} {showGraphEdges} />
+			<ParticipantsScene
+				baseLocation={{ ...event }}
+				{graph}
+				{showLocationAreas}
+				{showGraphEdges}
+				{showReportedLocations}
+				{showXYZReference}
+			/>
 		</div>
-		<EventControlPanel bind:showLocationAreas bind:showGraphEdges />
+		<EventControlPanel
+			bind:showLocationAreas
+			bind:showGraphEdges
+			bind:showReportedLocations
+			bind:showXYZReference
+		/>
 	</div>
 </div>

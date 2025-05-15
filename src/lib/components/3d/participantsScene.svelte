@@ -9,17 +9,25 @@
 	import { onMount } from 'svelte'
 	import { SvelteMap } from 'svelte/reactivity'
 	import LocationCylinder from './locationCylinder.svelte'
-	import { Key } from '@lucide/svelte'
 	import type { Vector3 } from 'three'
 
 	interface Props {
 		graph: Graph
 		baseLocation: ExactLocation
 		showLocationAreas: boolean
+		showReportedLocations: boolean
 		showGraphEdges: boolean
+		showXYZReference: Boolean
 	}
 
-	let { graph, baseLocation, showLocationAreas, showGraphEdges }: Props = $props()
+	let {
+		graph,
+		baseLocation,
+		showLocationAreas,
+		showGraphEdges,
+		showReportedLocations,
+		showXYZReference
+	}: Props = $props()
 
 	let nodes = new SvelteMap(Object.entries(graph.nodes))
 	let edges = new SvelteMap(
@@ -115,13 +123,17 @@
 			<OrbitControls />
 		</T.PerspectiveCamera>
 
-		<T.AxesHelper args={[0.5, 0.5, 0.5]} />
+		{#if showXYZReference}
+			<T.GridHelper args={[100, 10]} />
+			<T.AxesHelper args={[, 1, 1]} />
+		{/if}
 
 		{#each nodes as [id] (id)}
 			<LocationCylinder
 				particle={particles.get(id)!}
 				cylinder={cylinders.get(id)!}
 				{showLocationAreas}
+				{showReportedLocations}
 			/>
 		{/each}
 

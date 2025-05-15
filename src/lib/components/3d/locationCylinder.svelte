@@ -7,6 +7,7 @@
 
 	interface Props {
 		showLocationAreas: boolean
+		showReportedLocations: boolean
 		cylinder: {
 			position: Vector
 			radius: number
@@ -15,7 +16,7 @@
 		particle?: NodePosition
 	}
 
-	let { cylinder, particle, showLocationAreas }: Props = $props()
+	let { cylinder, particle, showLocationAreas, showReportedLocations }: Props = $props()
 	let { radius, height, position } = cylinder
 
 	const cylinderGeometry = new THREE.CylinderGeometry(radius, radius, height, 16)
@@ -32,6 +33,13 @@
 {#if particle}
 	<T.Mesh position={vectorToArray(particle.absolute)} scale={0.25}>
 		<T.SphereGeometry />
-		<FakeGlowMaterial glowColor="white" />
+		<FakeGlowMaterial glowColor="blue" />
+	</T.Mesh>
+{/if}
+
+{#if showReportedLocations}
+	<T.Mesh position={vectorToArray(position)} scale={0.25}>
+		<T.SphereGeometry />
+		<FakeGlowMaterial glowColor="red" />
 	</T.Mesh>
 {/if}
