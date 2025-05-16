@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { H3, H4, Muted, Small } from './typo'
+	import EffectButton from './ui/effectButton.svelte'
 	import Switch from './ui/switch.svelte'
 
 	interface Props {
@@ -27,51 +28,15 @@
 		<H4>Effects</H4>
 
 		<div class="grid grid-cols-3 gap-4">
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
-			<div
-				class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70"
-			>
-				a
-			</div>
+			<EffectButton>a</EffectButton>
+			<EffectButton>a</EffectButton>
+			<EffectButton>a</EffectButton>
+			<EffectButton>a</EffectButton>
+			<EffectButton>a</EffectButton>
+			<EffectButton>a</EffectButton>
+			<EffectButton>a</EffectButton>
+			<EffectButton>a</EffectButton>
+			<EffectButton>a</EffectButton>
 		</div>
 	</div>
 

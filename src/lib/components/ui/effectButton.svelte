@@ -1,0 +1,12 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte'
+
+	const { children, onclick }: { onclick?: () => void; children: Snippet } = $props()
+</script>
+
+<button
+	{onclick}
+	class="bg-zinc-900 aspect-square rounded-2xl p-4 shadow transition cursor-pointer hover:bg-zinc-900/70 active:ring"
+>
+	{@render children()}
+</button>

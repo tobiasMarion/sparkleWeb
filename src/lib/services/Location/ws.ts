@@ -1,13 +1,13 @@
-import { getCookieFromBrowser } from '$lib/utils'
 import { PUBLIC_BACKEND_DOMAIN } from '$env/static/public'
+import { getCookieFromBrowser } from '$lib/utils'
 import {
 	receivableMessageSchema,
 	safeParseJsonMessage,
 	type Listener,
 	type ListenersMap,
-	type ReceivableMessageType,
-	type SendableMessage
-} from './schemas'
+	type ReceivableMessageTypes,
+	type SendableMessages
+} from '../messages/schemas'
 
 let socket: WebSocket | null = null
 
@@ -16,7 +16,8 @@ const listeners: ListenersMap = {
 	USER_JOINED: new Set(),
 	DISTANCE_REPORT: new Set(),
 	USER_LEFT: new Set(),
-	SET_POINT_REPORT: new Set()
+	SET_POINT_REPORT: new Set(),
+	EFFECT: new Set()
 }
 
 export function connectWebSocket(eventId: string) {
@@ -62,14 +63,14 @@ export function disconnect() {
 	socket?.close()
 }
 
-export function sendMessage(message: SendableMessage) {
+export function sendMessage(message: SendableMessages) {
 	socket?.send(JSON.stringify(message))
 }
 
-export function addListener<K extends ReceivableMessageType>(type: K, listener: Listener<K>) {
+export function addListener<K extends ReceivableMessageTypes>(type: K, listener: Listener<K>) {
 	listeners[type].add(listener)
 }
 
-export function removeListener<K extends ReceivableMessageType>(type: K, listener: Listener<K>) {
+export function removeListener<K extends ReceivableMessageTypes>(type: K, listener: Listener<K>) {
 	listeners[type].delete(listener)
 }

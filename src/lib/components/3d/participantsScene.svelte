@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Graph } from '$lib/services/graph/schemas'
 	import { getEdgeId, vectorToThreeVector3 } from '$lib/services/graph/utils'
-	import type { ExactLocation, MessageMap } from '$lib/services/location/schemas'
+	import type { ExactLocation } from '$lib/services/location/schemas'
 	import { displacementOnEarth } from '$lib/services/location/utils'
 	import { addListener, removeListener } from '$lib/services/location/ws'
 	import { Canvas, T } from '@threlte/core'
@@ -10,6 +10,7 @@
 	import { SvelteMap } from 'svelte/reactivity'
 	import LocationCylinder from './locationCylinder.svelte'
 	import type { Vector3 } from 'three'
+	import type { MessageMap } from '$lib/services/messages/schemas'
 
 	interface Props {
 		graph: Graph

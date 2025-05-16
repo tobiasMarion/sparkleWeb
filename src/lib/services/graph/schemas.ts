@@ -19,7 +19,6 @@ const vectorSchema = z.object({
 
 export type Vector = z.infer<typeof vectorSchema>
 
-
 export const positionSchema = z.object({
 	relative: vectorSchema,
 	absolute: vectorSchema
@@ -37,5 +36,3 @@ export interface Graph {
 	>
 	edges: Edge[]
 }
-
-
