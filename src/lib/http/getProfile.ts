@@ -1,4 +1,4 @@
-import { api } from "./apiClientBrowser"
+import { api } from './apiClientBrowser'
 
 export interface User {
 	id: string

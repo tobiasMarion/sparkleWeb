@@ -16,7 +16,6 @@ export const api = ky.create({
 					console.error('Error trying to get token on server:', error)
 				}
 
-
 				if (token) {
 					request.headers.set('Authorization', `Bearer ${token}`)
 				}

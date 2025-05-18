@@ -1,4 +1,4 @@
-import { createEvent } from '$lib/http/createEvent.js'
+import { createEvent } from '$lib/http/createEvent'
 import { fail, redirect } from '@sveltejs/kit'
 import { z } from 'zod'
 

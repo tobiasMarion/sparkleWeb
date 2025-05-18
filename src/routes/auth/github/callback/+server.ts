@@ -1,4 +1,4 @@
-import { signInWithGitHub } from '$lib/http/signInWithGitHub.js'
+import { signInWithGitHub } from '$lib/http/signInWithGitHub'
 import { json, redirect } from '@sveltejs/kit'
 
 export async function GET({ request, cookies }) {
