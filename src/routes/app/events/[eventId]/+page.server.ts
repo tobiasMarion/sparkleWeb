@@ -11,8 +11,5 @@ export async function load({ params }) {
 		error(404)
 	}
 
-	return {
-		event,
-		graph
-	}
+	return { event, graph }
 }

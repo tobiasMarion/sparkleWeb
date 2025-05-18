@@ -2,6 +2,22 @@ import { z } from 'zod'
 import { locationSchema } from '../location/schemas'
 import { effectSchema } from './effects'
 
+const vector3Schema = z.object({
+	x: z.number(),
+	y: z.number(),
+	z: z.number()
+})
+
+export const positionPair = z.object({
+	relative: vector3Schema,
+	absolute: vector3Schema
+})
+
+export const positionSchema = z.object({
+	uncorrected: positionPair,
+	simulated: positionPair
+})
+
 export const messageSchemas = {
 	AUTH: z.object({
 		type: z.literal('AUTHENTICATION'),
@@ -35,12 +51,7 @@ export const messageSchemas = {
 	SET_POINT_REPORT: z.object({
 		type: z.literal('SET_POINT_REPORT'),
 		deviceId: z.string(),
-		absolute: z.object({ x: z.number(), y: z.number(), z: z.number() }),
-		relative: z.object({
-			x: z.number().int(),
-			y: z.number().int(),
-			z: z.number().int()
-		})
+		position: positionSchema
 	}),
 
 	EFFECT: z.object({
@@ -61,7 +72,7 @@ export const receivableMessageSchema = z.discriminatedUnion('type', [
 	messageSchemas.LOCATION_UPDATE_REPORT,
 	messageSchemas.SET_POINT_REPORT,
 	messageSchemas.USER_JOINED,
-	messageSchemas.USER_LEFT,
+	messageSchemas.USER_LEFT
 ])
 
 export const sendableMessageSchema = z.discriminatedUnion('type', [
@@ -83,9 +94,13 @@ export type ListenersMap = {
 	[K in ReceivableMessageTypes]: Set<Listener<K>>
 }
 
-type SafeParseReturn<T> =
-	| { success: true; error: null; data: T }
-	| { success: false; error: z.ZodFormattedError<T> | { message: string }; data: null }
+interface SafeParseError<T> {
+	success: false
+	error: z.ZodFormattedError<T> | { message: string }
+	data: null
+}
+
+type SafeParseReturn<T> = { success: true; error: null; data: T } | SafeParseError<T>
 
 export function safeParseJsonMessage<T>(
 	jsonString: string,

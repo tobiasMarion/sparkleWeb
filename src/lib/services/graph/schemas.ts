@@ -11,17 +11,22 @@ export const edgeSchema = z.object({
 export type Node = z.infer<typeof nodeSchema>
 export type Edge = z.infer<typeof edgeSchema>
 
-const vectorSchema = z.object({
+const vector3Schema = z.object({
 	x: z.number(),
 	y: z.number(),
 	z: z.number()
 })
 
-export type Vector = z.infer<typeof vectorSchema>
+export type Vector = z.infer<typeof vector3Schema>
+
+export const positionPair = z.object({
+	relative: vector3Schema,
+	absolute: vector3Schema
+})
 
 export const positionSchema = z.object({
-	relative: vectorSchema,
-	absolute: vectorSchema
+	uncorrected: positionPair,
+	simulated: positionPair
 })
 
 export type NodePosition = z.infer<typeof positionSchema>

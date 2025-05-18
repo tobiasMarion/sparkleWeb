@@ -4,13 +4,13 @@
 	import type { ExactLocation } from '$lib/services/location/schemas'
 	import { displacementOnEarth } from '$lib/services/location/utils'
 	import { addListener, removeListener } from '$lib/services/location/ws'
+	import type { MessageMap } from '$lib/services/messages/schemas'
 	import { Canvas, T } from '@threlte/core'
 	import { MeshLineGeometry, MeshLineMaterial, OrbitControls } from '@threlte/extras'
 	import { onMount } from 'svelte'
 	import { SvelteMap } from 'svelte/reactivity'
-	import LocationCylinder from './locationCylinder.svelte'
 	import type { Vector3 } from 'three'
-	import type { MessageMap } from '$lib/services/messages/schemas'
+	import LocationCylinder from './locationCylinder.svelte'
 
 	interface Props {
 		graph: Graph
@@ -18,7 +18,7 @@
 		showLocationAreas: boolean
 		showReportedLocations: boolean
 		showGraphEdges: boolean
-		showXYZReference: Boolean
+		showXYZReference: boolean
 	}
 
 	let {
@@ -66,8 +66,8 @@
 		edges.forEach(({ from, to }) => {
 			const id = getEdgeId({ from, to })
 
-			const v1 = particles.get(from)?.absolute
-			const v2 = particles.get(to)?.absolute
+			const v1 = particles.get(from)?.simulated.absolute
+			const v2 = particles.get(to)?.simulated.absolute
 
 			if (!v1 || !v2) return
 
@@ -75,6 +75,29 @@
 		})
 
 		return map
+	})
+
+	let data = $derived.by(() => {
+		const comparisons = Array.from(nodes.values())
+			.map(({ position }) => {
+				if (!position) return
+
+				const { uncorrected, simulated } = position
+				const { x: uncorrectedX, y: uncorrectedY, z: uncorrectedZ } = uncorrected.relative
+				const { x: simulatedX, y: simulatedY, z: simulatedZ } = simulated.relative
+
+				return (
+					uncorrectedX === simulatedX && uncorrectedY === simulatedY && uncorrectedZ === simulatedZ
+				)
+			})
+			.filter((v) => v !== undefined)
+
+		const total = comparisons.length
+		const falses = comparisons.filter((v) => v === false).length
+
+		const percentFalse = total > 0 ? (falses / total) * 100 : 0
+
+		return `${falses} / ${total} = ${percentFalse.toFixed(2)}%`
 	})
 
 	function onUserJoined({ deviceId, location }: MessageMap['USER_JOINED']) {
@@ -85,12 +108,11 @@
 		nodes.delete(deviceId)
 	}
 
-	function onSetPointReport({ deviceId, absolute, relative }: MessageMap['SET_POINT_REPORT']) {
+	function onSetPointReport({ deviceId, position }: MessageMap['SET_POINT_REPORT']) {
 		const node = nodes.get(deviceId)
 
 		if (!node) return
-
-		nodes.set(deviceId, { ...node, position: { absolute, relative } })
+		nodes.set(deviceId, { ...node, position })
 	}
 
 	function onDistanceReport({ from, to, distance }: MessageMap['DISTANCE_REPORT']) {
@@ -106,8 +128,8 @@
 	onMount(() => {
 		addListener('USER_JOINED', onUserJoined)
 		addListener('USER_LEFT', onUserLeft)
-		addListener('SET_POINT_REPORT', onSetPointReport)
 		addListener('DISTANCE_REPORT', onDistanceReport)
+		addListener('SET_POINT_REPORT', onSetPointReport)
 
 		return () => {
 			removeListener('USER_JOINED', onUserJoined)
@@ -119,6 +141,7 @@
 </script>
 
 <div class="aspect-video">
+	{data}
 	<Canvas>
 		<T.PerspectiveCamera makeDefault position={[5, 5, 5]}>
 			<OrbitControls />
@@ -126,7 +149,7 @@
 
 		{#if showXYZReference}
 			<T.GridHelper args={[100, 10]} />
-			<T.AxesHelper args={[, 1, 1]} />
+			<T.AxesHelper args={[1, 1, 1]} />
 		{/if}
 
 		{#each nodes as [id] (id)}

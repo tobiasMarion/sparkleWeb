@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { getProfile, type User } from '$lib/http/getProfile'
-	import { LogOutIcon, Loader2 } from '@lucide/svelte'
+	import { Loader2, LogOutIcon } from '@lucide/svelte'
 
+	import { goto } from '$app/navigation'
 	import { Avatar, DropdownMenu } from 'bits-ui'
 	import { onMount } from 'svelte'
-	import Small from './typo/small.svelte'
 	import Muted from './typo/muted.svelte'
-	import { redirect } from '@sveltejs/kit'
-	import { goto } from '$app/navigation'
+	import Small from './typo/small.svelte'
 
 	function getInitials(name: string) {
 		const initials = name
@@ -26,6 +25,7 @@
 			const res = await getProfile()
 			user = res.user
 		} catch (error) {
+			console.error(error)
 			goto('/auth/sign-out')
 		}
 	})

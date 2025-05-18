@@ -49,7 +49,8 @@ export function connectWebSocket(eventId: string) {
 		const { data: message, success, error } = safeParseJsonMessage(data, receivableMessageSchema)
 
 		if (!success) {
-			console.warn('Invalid message received:', error)
+			console.log(data)
+			console.error('Invalid message received:', error)
 			return
 		}
 

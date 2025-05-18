@@ -20,7 +20,6 @@
 	let { radius, height, position } = cylinder
 
 	const cylinderGeometry = new THREE.CylinderGeometry(radius, radius, height, 16)
-
 	const edgeGeometry = new THREE.EdgesGeometry(cylinderGeometry)
 </script>
 
@@ -31,7 +30,7 @@
 {/if}
 
 {#if particle}
-	<T.Mesh position={vectorToArray(particle.absolute)} scale={0.25}>
+	<T.Mesh position={vectorToArray(particle.simulated.absolute)} scale={0.25}>
 		<T.SphereGeometry />
 		<FakeGlowMaterial glowColor="blue" />
 	</T.Mesh>
