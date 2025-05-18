@@ -86,6 +86,8 @@
 				const { x: uncorrectedX, y: uncorrectedY, z: uncorrectedZ } = uncorrected.relative
 				const { x: simulatedX, y: simulatedY, z: simulatedZ } = simulated.relative
 
+				console.log(uncorrected.relative, simulated.relative)
+
 				return (
 					uncorrectedX === simulatedX && uncorrectedY === simulatedY && uncorrectedZ === simulatedZ
 				)

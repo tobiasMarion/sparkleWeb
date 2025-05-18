@@ -10,12 +10,12 @@ export const locationSchema = z.object({
 
 export type Location = z.infer<typeof locationSchema>
 
-export const LocationSchema = z.object({
+export const exactLocationSchema = z.object({
 	latitude: z.number().min(-90).max(90),
 	longitude: z.number().min(-180).max(180)
 })
 
-export type ExactLocation = z.infer<typeof LocationSchema>
+export type ExactLocation = z.infer<typeof exactLocationSchema>
 
 export const participantSchema = z.object({
 	deviceId: z.string(),
