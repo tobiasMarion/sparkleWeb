@@ -1,5 +1,5 @@
-import type { Graph, Node, NodeMetadata } from '$lib/services/graph/schemas'
-import { getEdgeId, vectorToThreeVector3, type NotWeightedEdge } from '$lib/services/graph/utils'
+import type { Edge, Graph, Node, NodeMetadata } from '$lib/services/graph/schemas'
+import { getEdgeId, vectorToThreeVector3 } from '$lib/services/graph/utils'
 import type { ExactLocation } from '$lib/services/location/schemas'
 import { displacementOnEarth } from '$lib/services/location/utils'
 import type { MessageMap } from '$lib/services/messages/schemas'
@@ -19,8 +19,8 @@ export function createInitialGraphStates(graph: Graph) {
 	const nodes = Object.entries(graph.nodes)
 
 	const edges = new Map(
-		graph.edges.map(({ from, to }) => {
-			return [getEdgeId({ from, to }), { from, to }]
+		graph.edges.map(({ from, to, value }) => {
+			return [getEdgeId({ from, to }), { from, to, value }]
 		})
 	)
 
@@ -51,7 +51,7 @@ export function createParticles(nodes: SvelteMap<Node, NodeMetadata>) {
 }
 
 export function createLines(
-	edges: SvelteMap<string, NotWeightedEdge>,
+	edges: SvelteMap<string, Edge>,
 	particles: ReturnType<typeof createParticles>
 ) {
 	const map = new Map<string, Vector3[]>()
@@ -75,7 +75,7 @@ export function createLines(
 
 export function createGraphListeners(
 	nodes: SvelteMap<Node, NodeMetadata>,
-	edges: SvelteMap<string, NotWeightedEdge>
+	edges: SvelteMap<string, Edge>
 ) {
 	function onUserJoined({ deviceId, location }: MessageMap['USER_JOINED']) {
 		nodes.set(deviceId, { location, position: undefined })
@@ -98,7 +98,7 @@ export function createGraphListeners(
 			return
 		}
 
-		edges.set(edgeId, { from, to })
+		edges.set(edgeId, { from, to, value: distance })
 	}
 
 	return { onUserJoined, onUserLeft, onSetPointReport, onDistanceReport }

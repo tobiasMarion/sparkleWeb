@@ -1,10 +1,13 @@
 <script lang="ts">
+	import SencondaryButton from '$lib/components/ui/sencondaryButton.svelte'
+	import { addListener, removeListener } from '$lib/services/messages/ws'
+	import { Download, View } from '@lucide/svelte'
 	import { Canvas, T } from '@threlte/core'
 	import { MeshLineGeometry, MeshLineMaterial, OrbitControls } from '@threlte/extras'
 	import { onMount } from 'svelte'
 	import { SvelteMap } from 'svelte/reactivity'
-	import { addListener, removeListener } from '$lib/services/messages/ws'
 	import LocationCylinder from '../locationCylinder.svelte'
+	import { exportGraphReport } from './reports'
 	import {
 		createCylinders,
 		createGraphListeners,
@@ -13,8 +16,6 @@
 		createParticles,
 		type Props
 	} from './scripts'
-	import Button from '$lib/components/ui/button.svelte'
-	import { Download, View } from '@lucide/svelte'
 
 	let {
 		graph,
@@ -82,18 +83,14 @@
 	</Canvas>
 
 	<div class="flex gap-4 justify-end">
-		<Button
-			class="bg-transparent hover:bg-tranparent text-xs text-muted-foreground border border-zinc-600 flex items-center"
-		>
+		<SencondaryButton onclick={() => exportGraphReport({ nodes, edges })}>
 			<Download class="size-4 mr-2" />
-			Export Graph State</Button
-		>
+			Export Graph State
+		</SencondaryButton>
 
-		<Button
-			class="bg-transparent hover:bg-tranparent text-xs text-muted-foreground border border-zinc-600 flex items-center"
-		>
+		<SencondaryButton>
 			<View class="size-4 mr-2" />
-			Center Graph on Scene</Button
-		>
+			Center Graph on Scene
+		</SencondaryButton>
 	</div>
 </div>
