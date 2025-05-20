@@ -1,4 +1,5 @@
 import type { Edge, Node, NodeMetadata } from '$lib/services/graph/schemas'
+import JSZip from 'jszip'
 import type { SvelteMap } from 'svelte/reactivity'
 
 function generateNodeLocations(nodes: SvelteMap<Node, NodeMetadata>) {
@@ -107,26 +108,24 @@ interface ExportGraphReportProps {
 	edges: SvelteMap<string, Edge>
 }
 
-export function exportGraphReport({ nodes, edges }: ExportGraphReportProps) {
-	const reports = [
-		{ content: generateNodeLocations(nodes), filename: 'node_locations.csv' },
-		{ content: generateNodePositions(nodes), filename: 'node_positions.csv' },
-		{ content: generateAdjacencyMatrix({ nodes, edges }), filename: 'adjacency_matrix.csv' }
-	]
+export async function exportGraphReport({ nodes, edges }: ExportGraphReportProps) {
+	const zip = new JSZip();
 
-	reports.forEach(({ content, filename }) => {
-		const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' })
-		const url = URL.createObjectURL(blob)
+	zip.file('node_locations.csv', generateNodeLocations(nodes));
+	zip.file('node_positions.csv', generateNodePositions(nodes));
+	zip.file('adjacency_matrix.csv', generateAdjacencyMatrix({ nodes, edges }));
 
-		const a = document.createElement('a')
-		a.href = url
-		a.download = filename
-		a.style.display = 'none'
+	const blob = await zip.generateAsync({ type: 'blob' });
 
-		document.body.appendChild(a)
-		a.click()
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = 'graph_report.zip';
+	a.style.display = 'none';
 
-		document.body.removeChild(a)
-		URL.revokeObjectURL(url)
-	})
+	document.body.appendChild(a);
+	a.click();
+
+	document.body.removeChild(a);
+	URL.revokeObjectURL(url);
 }
