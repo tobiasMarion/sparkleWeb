@@ -29,7 +29,7 @@
 	</div>
 
 	<div class="flex gap-8">
-		<div class="w-full">
+		<div class="w-full pt-12">
 			<ParticipantsScene
 				baseLocation={{ ...event }}
 				{graph}

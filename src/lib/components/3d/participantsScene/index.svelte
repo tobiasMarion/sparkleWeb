@@ -1,19 +1,20 @@
 <script lang="ts">
-	import { getEdgeId } from '$lib/services/graph/utils'
-	import type { MessageMap } from '$lib/services/messages/schemas'
-	import { addListener, removeListener } from '$lib/services/messages/ws'
 	import { Canvas, T } from '@threlte/core'
 	import { MeshLineGeometry, MeshLineMaterial, OrbitControls } from '@threlte/extras'
 	import { onMount } from 'svelte'
 	import { SvelteMap } from 'svelte/reactivity'
+	import { addListener, removeListener } from '$lib/services/messages/ws'
 	import LocationCylinder from '../locationCylinder.svelte'
 	import {
 		createCylinders,
+		createGraphListeners,
 		createInitialGraphStates,
 		createLines,
 		createParticles,
 		type Props
 	} from './scripts'
+	import Button from '$lib/components/ui/button.svelte'
+	import { Download, View } from '@lucide/svelte'
 
 	let {
 		graph,
@@ -34,46 +35,23 @@
 	let lines = $derived.by(() => createLines(edges, particles))
 
 	onMount(() => {
-		function onUserJoined({ deviceId, location }: MessageMap['USER_JOINED']) {
-			nodes.set(deviceId, { location, position: undefined })
-		}
+		const listeners = createGraphListeners(nodes, edges)
 
-		function onUserLeft({ deviceId }: MessageMap['USER_LEFT']) {
-			nodes.delete(deviceId)
-		}
-
-		function onSetPointReport({ deviceId, position }: MessageMap['SET_POINT_REPORT']) {
-			const node = nodes.get(deviceId)
-
-			if (!node) return
-			nodes.set(deviceId, { ...node, position })
-		}
-
-		function onDistanceReport({ from, to, distance }: MessageMap['DISTANCE_REPORT']) {
-			const edgeId = getEdgeId({ from, to })
-			if (distance === null) {
-				edges.delete(edgeId)
-				return
-			}
-
-			edges.set(edgeId, { from, to })
-		}
-
-		addListener('USER_JOINED', onUserJoined)
-		addListener('USER_LEFT', onUserLeft)
-		addListener('DISTANCE_REPORT', onDistanceReport)
-		addListener('SET_POINT_REPORT', onSetPointReport)
+		addListener('USER_JOINED', listeners.onUserJoined)
+		addListener('USER_LEFT', listeners.onUserLeft)
+		addListener('DISTANCE_REPORT', listeners.onDistanceReport)
+		addListener('SET_POINT_REPORT', listeners.onSetPointReport)
 
 		return () => {
-			removeListener('USER_JOINED', onUserJoined)
-			removeListener('USER_LEFT', onUserLeft)
-			removeListener('SET_POINT_REPORT', onSetPointReport)
-			removeListener('DISTANCE_REPORT', onDistanceReport)
+			removeListener('USER_JOINED', listeners.onUserJoined)
+			removeListener('USER_LEFT', listeners.onUserLeft)
+			removeListener('SET_POINT_REPORT', listeners.onSetPointReport)
+			removeListener('DISTANCE_REPORT', listeners.onDistanceReport)
 		}
 	})
 </script>
 
-<div class="aspect-video">
+<div class="aspect-video space-y-8">
 	<Canvas>
 		<T.PerspectiveCamera makeDefault position={[5, 5, 5]}>
 			<OrbitControls />
@@ -102,4 +80,20 @@
 			{/each}
 		{/if}
 	</Canvas>
+
+	<div class="flex gap-4 justify-end">
+		<Button
+			class="bg-transparent hover:bg-tranparent text-xs text-muted-foreground border border-zinc-600 flex items-center"
+		>
+			<Download class="size-4 mr-2" />
+			Export Graph State</Button
+		>
+
+		<Button
+			class="bg-transparent hover:bg-tranparent text-xs text-muted-foreground border border-zinc-600 flex items-center"
+		>
+			<View class="size-4 mr-2" />
+			Center Graph on Scene</Button
+		>
+	</div>
 </div>

@@ -2,6 +2,7 @@ import type { Graph, Node, NodeMetadata } from '$lib/services/graph/schemas'
 import { getEdgeId, vectorToThreeVector3, type NotWeightedEdge } from '$lib/services/graph/utils'
 import type { ExactLocation } from '$lib/services/location/schemas'
 import { displacementOnEarth } from '$lib/services/location/utils'
+import type { MessageMap } from '$lib/services/messages/schemas'
 import type { SvelteMap } from 'svelte/reactivity'
 import type { Vector3 } from 'three'
 
@@ -70,4 +71,35 @@ export function createLines(
 	})
 
 	return map
+}
+
+export function createGraphListeners(
+	nodes: SvelteMap<Node, NodeMetadata>,
+	edges: SvelteMap<string, NotWeightedEdge>
+) {
+	function onUserJoined({ deviceId, location }: MessageMap['USER_JOINED']) {
+		nodes.set(deviceId, { location, position: undefined })
+	}
+
+	function onUserLeft({ deviceId }: MessageMap['USER_LEFT']) {
+		nodes.delete(deviceId)
+	}
+
+	function onSetPointReport({ deviceId, position }: MessageMap['SET_POINT_REPORT']) {
+		const node = nodes.get(deviceId)
+		if (!node) return
+		nodes.set(deviceId, { ...node, position })
+	}
+
+	function onDistanceReport({ from, to, distance }: MessageMap['DISTANCE_REPORT']) {
+		const edgeId = getEdgeId({ from, to })
+		if (distance === null) {
+			edges.delete(edgeId)
+			return
+		}
+
+		edges.set(edgeId, { from, to })
+	}
+
+	return { onUserJoined, onUserLeft, onSetPointReport, onDistanceReport }
 }
