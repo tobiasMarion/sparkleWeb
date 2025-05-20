@@ -1,7 +1,9 @@
 import { Vector3 } from 'three'
 import type { Edge, Vector } from './schemas'
 
-export function getEdgeId({ from, to }: Pick<Edge, 'from' | 'to'>): string {
+export type NotWeightedEdge = Pick<Edge, 'from' | 'to'>
+
+export function getEdgeId({ from, to }: NotWeightedEdge): string {
 	return `${from}->${to}`
 }
 

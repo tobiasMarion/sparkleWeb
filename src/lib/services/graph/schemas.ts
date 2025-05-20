@@ -30,14 +30,13 @@ export const positionSchema = z.object({
 })
 
 export type NodePosition = z.infer<typeof positionSchema>
+export type NodeMetadata = {
+	location: Location
+	position?: NodePosition
+}
+export type NodesRecord = Record<Node, NodeMetadata>
 
 export interface Graph {
-	nodes: Record<
-		Node,
-		{
-			location: Location
-			position?: NodePosition
-		}
-	>
+	nodes: NodesRecord
 	edges: Edge[]
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ParticipantsScene from '$lib/components/3d/participantsScene.svelte'
+	import ParticipantsScene from '$lib/components/3d/participantsScene/index.svelte'
 	import EventControlPanel from '$lib/components/eventControlPanel.svelte'
 	import { H2, Muted } from '$lib/components/typo/'
 	import { connectWebSocket, disconnect } from '$lib/services/messages/ws.js'

@@ -12,9 +12,7 @@
 		"strict": true,
 		"moduleResolution": "bundler",
 		"verbatimModuleSyntax": true,
-		"types": [
-			"mapbox-gl"
-		],
+		"types": ["mapbox-gl"],
 		"allowImportingTsExtensions": true
 	}
 }

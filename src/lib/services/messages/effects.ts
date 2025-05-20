@@ -39,10 +39,20 @@ type PreviewUpdaters = {
 }
 
 export const previewUpdaters: PreviewUpdaters = {
-	PULSE: function (effect: { name: 'PULSE'; coordinateType: 'ABSOLUTE' | 'RELATIVE'; activeTime: number; spreadDelayPerUnit: number }, position: NodePosition, setState: (s: boolean) => void): void {
+	PULSE: function (
+		effect: EffectTypeMap['PULSE'],
+		position: NodePosition,
+		setState: (s: boolean) => void
+	) {
+		console.log(effect, position, setState)
 		throw new Error('Function not implemented.')
 	},
-	WAVE: function (effect: { name: 'WAVE'; activeTime: number; spreadDelayPerUnit: number; direction: 'X' | 'Y' | 'Z' }, position: NodePosition, setState: (s: boolean) => void): void {
+	WAVE: function (
+		effect: EffectTypeMap['WAVE'],
+		position: NodePosition,
+		setState: (s: boolean) => void
+	) {
+		console.log(effect, position, setState)
 		throw new Error('Function not implemented.')
 	}
 }
