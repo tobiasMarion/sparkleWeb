@@ -2,7 +2,7 @@
 	import ParticipantsScene from '$lib/components/3d/participantsScene.svelte'
 	import EventControlPanel from '$lib/components/eventControlPanel.svelte'
 	import { H2, Muted } from '$lib/components/typo/'
-	import { connectWebSocket, disconnect } from '$lib/services/location/ws.ts'
+	import { connectWebSocket, disconnect } from '$lib/services/messages/ws.js'
 	import { onMount } from 'svelte'
 
 	let { data } = $props()

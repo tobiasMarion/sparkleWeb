@@ -7,7 +7,7 @@ import {
 	type ListenersMap,
 	type ReceivableMessageTypes,
 	type SendableMessages
-} from '../messages/schemas'
+} from './schemas'
 
 let socket: WebSocket | null = null
 

@@ -3,7 +3,7 @@
 	import { getEdgeId, vectorToThreeVector3 } from '$lib/services/graph/utils'
 	import type { ExactLocation } from '$lib/services/location/schemas'
 	import { displacementOnEarth } from '$lib/services/location/utils'
-	import { addListener, removeListener } from '$lib/services/location/ws'
+	import { addListener, removeListener } from '$lib/services/messages/ws'
 	import type { MessageMap } from '$lib/services/messages/schemas'
 	import { Canvas, T } from '@threlte/core'
 	import { MeshLineGeometry, MeshLineMaterial, OrbitControls } from '@threlte/extras'
@@ -77,31 +77,6 @@
 		return map
 	})
 
-	let data = $derived.by(() => {
-		const comparisons = Array.from(nodes.values())
-			.map(({ position }) => {
-				if (!position) return
-
-				const { uncorrected, simulated } = position
-				const { x: uncorrectedX, y: uncorrectedY, z: uncorrectedZ } = uncorrected.relative
-				const { x: simulatedX, y: simulatedY, z: simulatedZ } = simulated.relative
-
-				console.log(uncorrected.relative, simulated.relative)
-
-				return (
-					uncorrectedX === simulatedX && uncorrectedY === simulatedY && uncorrectedZ === simulatedZ
-				)
-			})
-			.filter((v) => v !== undefined)
-
-		const total = comparisons.length
-		const falses = comparisons.filter((v) => v === false).length
-
-		const percentFalse = total > 0 ? (falses / total) * 100 : 0
-
-		return `${falses} / ${total} = ${percentFalse.toFixed(2)}%`
-	})
-
 	function onUserJoined({ deviceId, location }: MessageMap['USER_JOINED']) {
 		nodes.set(deviceId, { location, position: undefined })
 	}
@@ -143,7 +118,6 @@
 </script>
 
 <div class="aspect-video">
-	{data}
 	<Canvas>
 		<T.PerspectiveCamera makeDefault position={[5, 5, 5]}>
 			<OrbitControls />
