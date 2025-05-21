@@ -1,7 +1,10 @@
 <script lang="ts">
+	import type { Effect, EffectTypes } from '$lib/services/messages/effects'
+	import { Radius } from '@lucide/svelte'
 	import { H3, H4, Muted, Small } from './typo'
 	import EffectButton from './ui/effectButton.svelte'
 	import Switch from './ui/switch.svelte'
+	import { sendMessage } from '$lib/services/messages/ws'
 
 	interface Props {
 		showLocationAreas: boolean
@@ -16,6 +19,22 @@
 		showReportedLocations = $bindable(false),
 		showXYZReference = $bindable(false)
 	}: Props = $props()
+
+	function sendEffect(effect: EffectTypes) {
+		let effectConfig: Effect
+
+		effectConfig = {
+			name: 'PULSE',
+			coordinateType: 'ABSOLUTE',
+			activeTime: 500,
+			spreadDelayPerUnit: 75
+		}
+
+		sendMessage({
+			type: 'EFFECT',
+			effect: effectConfig
+		})
+	}
 </script>
 
 <div class="border border-border rounded-lg shadow round p-8 h-fit min-w-sm space-y-6">
@@ -28,7 +47,9 @@
 		<H4>Effects</H4>
 
 		<div class="grid grid-cols-3 gap-4">
-			<EffectButton>a</EffectButton>
+			<EffectButton onclick={() => sendEffect('PULSE')}>
+				<Radius class="size-12" />
+			</EffectButton>
 			<EffectButton>a</EffectButton>
 			<EffectButton>a</EffectButton>
 			<EffectButton>a</EffectButton>

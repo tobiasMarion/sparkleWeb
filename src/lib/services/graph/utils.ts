@@ -18,3 +18,7 @@ export function vectorToThreeVector3(v: Vector) {
 
 	return new Vector3(x, y, z)
 }
+
+export function XZDistanceFromOrigin({ x, z }: Vector) {
+	return Math.sqrt(x * x + z * z)
+}
