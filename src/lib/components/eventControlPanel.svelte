@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Effect, EffectTypes } from '$lib/services/messages/effects'
-	import { Radius } from '@lucide/svelte'
+	import { sendMessage } from '$lib/services/messages/ws'
+	import { ArrowRightFromLine, CircleArrowOutUpRight } from '@lucide/svelte'
 	import { H3, H4, Muted, Small } from './typo'
 	import EffectButton from './ui/effectButton.svelte'
 	import Switch from './ui/switch.svelte'
-	import { sendMessage } from '$lib/services/messages/ws'
 
 	interface Props {
 		showLocationAreas: boolean
@@ -23,11 +23,24 @@
 	function sendEffect(effect: EffectTypes) {
 		let effectConfig: Effect
 
-		effectConfig = {
-			name: 'PULSE',
-			coordinateType: 'ABSOLUTE',
-			activeTime: 500,
-			spreadDelayPerUnit: 75
+		switch (effect) {
+			case 'PULSE':
+				effectConfig = {
+					name: 'PULSE',
+					coordinateType: 'ABSOLUTE',
+					activeTime: 500,
+					spreadDelayPerUnit: 75
+				}
+				break
+
+			case 'WAVE':
+				effectConfig = {
+					name: 'WAVE',
+					direction: 'X',
+					activeTime: 300,
+					spreadDelayPerUnit: 10
+				}
+				break
 		}
 
 		sendMessage({
@@ -48,12 +61,12 @@
 
 		<div class="grid grid-cols-3 gap-4">
 			<EffectButton onclick={() => sendEffect('PULSE')}>
-				<Radius class="size-12" />
+				<CircleArrowOutUpRight class="size-12" />
 			</EffectButton>
-			<EffectButton>a</EffectButton>
-			<EffectButton>a</EffectButton>
-			<EffectButton>a</EffectButton>
-			<EffectButton>a</EffectButton>
+
+			<EffectButton onclick={() => sendEffect('WAVE')}>
+				<ArrowRightFromLine class="size-12" />
+			</EffectButton>
 			<EffectButton>a</EffectButton>
 			<EffectButton>a</EffectButton>
 			<EffectButton>a</EffectButton>

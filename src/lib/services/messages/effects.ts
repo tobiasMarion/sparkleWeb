@@ -29,7 +29,7 @@ export type EffectTypeMap = {
 	[K in EffectTypes]: Extract<Effect, { name: K }>
 }
 
-type UpdatePreviewOnEffect<E extends EffectTypes> = (
+export type UpdatePreviewOnEffect<E extends EffectTypes> = (
 	effect: EffectTypeMap[E],
 	position: NodePosition,
 	setState: (s: boolean) => void
@@ -62,7 +62,29 @@ export const previewUpdaters: PreviewUpdaters = {
 		position: NodePosition,
 		setState: (s: boolean) => void
 	) {
-		console.log(effect, position, setState)
-		throw new Error('Function not implemented.')
+		const { direction, activeTime, spreadDelayPerUnit } = effect
+		const { x, y, z } = position.simulated.relative
+
+		let distance: number
+
+		switch (direction) {
+			case 'X':
+				distance = x
+				break
+
+			case 'Y':
+				distance = y
+				break
+
+			case 'Z':
+				distance = z
+				break
+		}
+
+		const waitFor = distance * spreadDelayPerUnit
+		const waitForTurnOff = waitFor + activeTime
+
+		setTimeout(() => { setState(true) }, waitFor)
+		setTimeout(() => { setState(false) }, waitForTurnOff)
 	}
 }

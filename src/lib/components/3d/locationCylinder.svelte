@@ -1,13 +1,18 @@
 <script lang="ts">
 	import { type NodePosition, type Vector } from '$lib/services/graph/schemas'
 	import { vectorToArray } from '$lib/services/graph/utils'
-	import { previewUpdaters, type EffectTypeMap } from '$lib/services/messages/effects'
+	import {
+		previewUpdaters,
+		type EffectTypeMap,
+		type UpdatePreviewOnEffect
+	} from '$lib/services/messages/effects'
 	import type { MessageMap } from '$lib/services/messages/schemas'
 	import { addListener, removeListener } from '$lib/services/messages/ws'
 	import { T } from '@threlte/core'
 	import { FakeGlowMaterial } from '@threlte/extras'
 	import { onMount } from 'svelte'
 	import * as THREE from 'three'
+	import { Break } from 'three/tsl'
 
 	interface Props {
 		showLocationAreas: boolean
@@ -35,9 +40,14 @@
 		function listenToEffect({ effect }: MessageMap['EFFECT']) {
 			if (!particle) return
 
-			if (effect.name === 'PULSE') {
-				const handler = previewUpdaters['PULSE']
-				handler(effect, particle, setState)
+			switch (effect.name) {
+				case 'PULSE':
+					previewUpdaters['PULSE'](effect, particle, setState)
+					break
+
+				case 'WAVE':
+					previewUpdaters['WAVE'](effect, particle, setState)
+					break
 			}
 		}
 
