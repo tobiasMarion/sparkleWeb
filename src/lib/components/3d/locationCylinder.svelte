@@ -29,6 +29,8 @@
 	let { radius, height, position } = cylinder
 
 	let isActive = $state(false)
+	let particleColor = $derived(isActive ? 'white' : '#3f3f46')
+
 	function setState(s: boolean) {
 		isActive = s
 	}
@@ -48,6 +50,10 @@
 				case 'WAVE':
 					previewUpdaters['WAVE'](effect, particle, setState)
 					break
+
+				case 'ROTATE':
+					previewUpdaters['ROTATE'](effect, particle, setState)
+					break
 			}
 		}
 
@@ -66,9 +72,9 @@
 {/if}
 
 {#if particle}
-	<T.Mesh position={vectorToArray(particle.simulated.absolute)} scale={0.25}>
+	<T.Mesh position={vectorToArray(particle.simulated.absolute)} scale={isActive ? 0.4 : 0.25}>
 		<T.SphereGeometry />
-		<FakeGlowMaterial glowColor={isActive ? 'red' : 'blue'} />
+		<FakeGlowMaterial glowColor={showReportedLocations ? 'blue' : particleColor} />
 	</T.Mesh>
 {/if}
 

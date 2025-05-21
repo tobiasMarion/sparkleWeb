@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Effect, EffectTypes } from '$lib/services/messages/effects'
 	import { sendMessage } from '$lib/services/messages/ws'
-	import { ArrowRightFromLine, CircleArrowOutUpRight } from '@lucide/svelte'
+	import { ArrowRightFromLine, CircleArrowOutUpRight, Clock5 } from '@lucide/svelte'
 	import { H3, H4, Muted, Small } from './typo'
 	import EffectButton from './ui/effectButton.svelte'
 	import Switch from './ui/switch.svelte'
@@ -21,7 +21,7 @@
 	}: Props = $props()
 
 	function sendEffect(effect: EffectTypes) {
-		let effectConfig: Effect
+		let effectConfig: Effect | null = null
 
 		switch (effect) {
 			case 'PULSE':
@@ -41,6 +41,18 @@
 					spreadDelayPerUnit: 10
 				}
 				break
+
+			case 'ROTATE':
+				effectConfig = {
+					name: 'ROTATE',
+					activeTime: 500,
+					spreadDelayPerRadian: 200
+				}
+				break
+		}
+
+		if (!effectConfig) {
+			return
 		}
 
 		sendMessage({
@@ -67,7 +79,10 @@
 			<EffectButton onclick={() => sendEffect('WAVE')}>
 				<ArrowRightFromLine class="size-12" />
 			</EffectButton>
-			<EffectButton>a</EffectButton>
+
+			<EffectButton onclick={() => sendEffect('ROTATE')}>
+				<Clock5 class="size-12" />
+			</EffectButton>
 			<EffectButton>a</EffectButton>
 			<EffectButton>a</EffectButton>
 			<EffectButton>a</EffectButton>

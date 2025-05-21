@@ -17,10 +17,19 @@ const effectSchemas = {
 		direction: directionsSchema,
 		activeTime: z.number().nonnegative(),
 		spreadDelayPerUnit: z.number().nonnegative()
+	}),
+	ROTATE: z.object({
+		name: z.literal('ROTATE'),
+		activeTime: z.number().nonnegative(),
+		spreadDelayPerRadian: z.number().nonnegative()
 	})
 } as const
 
-export const effectSchema = z.discriminatedUnion('name', [effectSchemas.PULSE, effectSchemas.WAVE])
+export const effectSchema = z.discriminatedUnion('name', [
+	effectSchemas.PULSE,
+	effectSchemas.WAVE,
+	effectSchemas.ROTATE
+])
 
 export type Effect = z.infer<typeof effectSchema>
 export type EffectTypes = Effect['name']
@@ -82,6 +91,23 @@ export const previewUpdaters: PreviewUpdaters = {
 		}
 
 		const waitFor = distance * spreadDelayPerUnit
+		const waitForTurnOff = waitFor + activeTime
+
+		setTimeout(() => { setState(true) }, waitFor)
+		setTimeout(() => { setState(false) }, waitForTurnOff)
+	},
+
+	ROTATE: function (
+		{ activeTime, spreadDelayPerRadian }: EffectTypeMap['ROTATE'],
+		position: NodePosition,
+		setState: (s: boolean) => void
+	) {
+		const { x, z } = position.simulated.absolute
+
+		const angle = Math.atan2(z, x)  // [-π, π]
+		const angleNormalized = (angle + 2 * Math.PI) % (2 * Math.PI) // [0, 2π]
+
+		const waitFor = angleNormalized * spreadDelayPerRadian
 		const waitForTurnOff = waitFor + activeTime
 
 		setTimeout(() => { setState(true) }, waitFor)
