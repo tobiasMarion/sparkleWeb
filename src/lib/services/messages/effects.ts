@@ -22,13 +22,20 @@ const effectSchemas = {
 		name: z.literal('ROTATE'),
 		activeTime: z.number().nonnegative(),
 		spreadDelayPerRadian: z.number().nonnegative()
+	}),
+	SPIRAL: z.object({
+		name: z.literal('SPIRAL'),
+		activeTime: z.number().nonnegative(),
+		radialSpeed: z.number().nonnegative(),
+		angularSpeed: z.number().nonnegative()
 	})
 } as const
 
 export const effectSchema = z.discriminatedUnion('name', [
 	effectSchemas.PULSE,
 	effectSchemas.WAVE,
-	effectSchemas.ROTATE
+	effectSchemas.ROTATE,
+	effectSchemas.SPIRAL
 ])
 
 export type Effect = z.infer<typeof effectSchema>
@@ -108,6 +115,22 @@ export const previewUpdaters: PreviewUpdaters = {
 		const angleNormalized = (angle + 2 * Math.PI) % (2 * Math.PI) // [0, 2π]
 
 		const waitFor = angleNormalized * spreadDelayPerRadian
+		const waitForTurnOff = waitFor + activeTime
+
+		setTimeout(() => { setState(true) }, waitFor)
+		setTimeout(() => { setState(false) }, waitForTurnOff)
+	},
+
+	SPIRAL: function (
+		{ radialSpeed, angularSpeed, activeTime }: EffectTypeMap['SPIRAL'],
+		position: NodePosition,
+		setState: (s: boolean) => void
+	) {
+		const { x, z } = position.simulated.absolute
+		const angle = Math.atan2(z, x)
+		const distance = Math.sqrt(x * x + z * z)
+
+		const waitFor = (distance * radialSpeed) + (angle * angularSpeed)
 		const waitForTurnOff = waitFor + activeTime
 
 		setTimeout(() => { setState(true) }, waitFor)

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Effect, EffectTypes } from '$lib/services/messages/effects'
 	import { sendMessage } from '$lib/services/messages/ws'
-	import { ArrowRightFromLine, CircleArrowOutUpRight, Clock5 } from '@lucide/svelte'
+	import { ArrowRightFromLine, CircleArrowOutUpRight, Clock5, Shell } from '@lucide/svelte'
 	import { H3, H4, Muted, Small } from './typo'
 	import EffectButton from './ui/effectButton.svelte'
 	import Switch from './ui/switch.svelte'
@@ -49,6 +49,14 @@
 					spreadDelayPerRadian: 200
 				}
 				break
+
+			case 'SPIRAL':
+				effectConfig = {
+					name: 'SPIRAL',
+					activeTime: 500,
+					radialSpeed: 100,
+					angularSpeed: 200
+				}
 		}
 
 		if (!effectConfig) {
@@ -83,7 +91,11 @@
 			<EffectButton onclick={() => sendEffect('ROTATE')}>
 				<Clock5 class="size-12" />
 			</EffectButton>
-			<EffectButton>a</EffectButton>
+
+			<EffectButton onclick={() => sendEffect('SPIRAL')}>
+				<Shell class="size-12" />
+			</EffectButton>
+
 			<EffectButton>a</EffectButton>
 			<EffectButton>a</EffectButton>
 		</div>

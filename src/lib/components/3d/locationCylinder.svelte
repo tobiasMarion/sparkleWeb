@@ -54,6 +54,9 @@
 				case 'ROTATE':
 					previewUpdaters['ROTATE'](effect, particle, setState)
 					break
+
+				case 'SPIRAL':
+					previewUpdaters['SPIRAL'](effect, particle, setState)
 			}
 		}
 
@@ -79,7 +82,7 @@
 {/if}
 
 {#if showReportedLocations}
-	<T.Mesh position={vectorToArray(position)} scale={0.25}>
+	<T.Mesh position={vectorToArray(position)} scale={isActive ? 0.4 : 0.25}>
 		<T.SphereGeometry />
 		<FakeGlowMaterial glowColor="red" />
 	</T.Mesh>
